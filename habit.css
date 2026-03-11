@@ -1,0 +1,78 @@
+:root {
+  --primary: #6366f1;
+  --bg: #f8fafc;
+  --text: #1e293b;
+}
+body {
+  font-family: "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+}
+.hidden {
+  display: none;
+}
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+button {
+  width: 100%;
+  padding: 12px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-top: 10px;
+}
+button:hover {
+  opacity: 0.9;
+}
+.habit-item {
+  border: 1px solid #f1f5f9;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  background: #fff;
+}
+.progress-bg {
+  background: #e2e8f0;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+.progress-fill {
+  background: #10b981;
+  height: 100%;
+  transition: width 0.5s ease;
+}
+.error {
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+.link {
+  color: var(--primary);
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 0.9rem;
+}
