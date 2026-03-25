@@ -15,7 +15,7 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background: var(--bg-dark);
   color: var(--text);
   min-height: 100vh;
@@ -29,7 +29,6 @@ body {
   padding: 20px;
 }
 
-/* TAKES ALMOST ALL SCREEN AS REQUESTED */
 .card {
   background: var(--card-bg);
   padding: 3rem;
@@ -41,12 +40,23 @@ body {
   border: 1px solid #334155;
 }
 
-.hidden { display: none; }
+.hidden {
+  display: none;
+}
 
-.hero-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
-.hero-subtitle { color: #94a3b8; margin-bottom: 30px; font-size: 1.1rem; }
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+.hero-subtitle {
+  color: #94a3b8;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+}
 
-input, select {
+input,
+select {
   width: 100%;
   padding: 15px;
   margin: 10px 0;
@@ -57,7 +67,10 @@ input, select {
   font-size: 1rem;
 }
 
-.input-row { display: flex; gap: 15px; }
+.input-row {
+  display: flex;
+  gap: 15px;
+}
 
 .btn-primary {
   width: 100%;
@@ -73,7 +86,10 @@ input, select {
   transition: 0.3s;
 }
 
-.btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
 
 /* STYLED LOGOUT */
 .btn-logout {
@@ -133,11 +149,31 @@ input, select {
   transition: 0.5s;
 }
 
-.error { color: var(--danger); margin-bottom: 10px; font-weight: 600; }
-.switch-text { text-align: center; margin-top: 20px; color: #94a3b8; }
-.link { color: var(--primary); cursor: pointer; text-decoration: underline; }
+.error {
+  color: var(--danger);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.switch-text {
+  text-align: center;
+  margin-top: 20px;
+  color: #94a3b8;
+}
+.link {
+  color: var(--primary);
+  cursor: pointer;
+  text-decoration: underline;
+}
 
 @media (max-width: 768px) {
-    .input-row { flex-direction: column; gap: 0; }
-    .card { padding: 1.5rem; width: 100%; min-height: 100vh; border-radius: 0; }
+  .input-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  .card {
+    padding: 1.5rem;
+    width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+  }
 }
