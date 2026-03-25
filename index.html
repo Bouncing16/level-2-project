@@ -1,53 +1,82 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Habit Tracker</title>
-    <link rel="stylesheet" href="./habit.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Habit Tracker Pro</title>
+    <link rel="stylesheet" href="./habit.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div class="card">
+        <div id="signup-screen">
+          <h1 class="hero-title">Create Account</h1>
+          <p class="hero-subtitle">Start building better habits today.</p>
+          <div id="signup-error" class="error"></div>
 
-<div class="card">
-    <div id="signup-screen">
-        <h2>Create Account</h2>
-        <p>Start your journey today.</p>
-        <div id="signup-error" class="error"></div>
-        <input type="email" id="s-email" placeholder="Email Address">
-        <input type="password" id="s-pass" placeholder="Password">
-        <select id="s-gender">
+          <input type="text" id="s-username" placeholder="Username" />
+          <div class="input-row">
+            <input type="text" id="s-firstname" placeholder="First Name" />
+            <input type="text" id="s-lastname" placeholder="Last Name" />
+          </div>
+          <input
+            type="email"
+            id="s-email"
+            placeholder="Email Address (e.g. name@mail.com)"
+          />
+          <input type="password" id="s-pass" placeholder="Password" />
+          <select id="s-gender">
             <option value="">Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Other</option>
-        </select>
-        <button onclick="handleSignup()">Sign Up</button>
-        <p style="text-align:center">Already have an account? <span class="link" onclick="showScreen('login-screen')">Login</span></p>
-    </div>
+          </select>
+          <button class="btn-primary" onclick="handleSignup()">Sign Up</button>
+          <p class="switch-text">
+            Already have an account?
+            <span class="link" onclick="showScreen('login-screen')">Login</span>
+          </p>
+        </div>
 
-    <div id="login-screen" class="hidden">
-        <h2>Login</h2>
-        <div id="login-error" class="error"></div>
-        <input type="email" id="l-email" placeholder="Email Address">
-        <input type="password" id="l-pass" placeholder="Password">
-        <button onclick="handleLogin()">Login</button>
-        <p style="text-align:center">New here? <span class="link" onclick="showScreen('signup-screen')">Sign up</span></p>
-    </div>
+        <div id="login-screen" class="hidden">
+          <h1 class="hero-title">Welcome Back</h1>
+          <p class="hero-subtitle">Login to your dashboard.</p>
+          <div id="login-error" class="error"></div>
+          <input type="email" id="l-email" placeholder="Email Address" />
+          <input type="password" id="l-pass" placeholder="Password" />
+          <button class="btn-primary" onclick="handleLogin()">Login</button>
+          <p class="switch-text">
+            New here?
+            <span class="link" onclick="showScreen('signup-screen')"
+              >Sign up</span
+            >
+          </p>
+        </div>
 
-    <div id="app-screen" class="hidden">
-        <div style="display:flex; justify-content: space-between; align-items: center;">
+        <div id="app-screen" class="hidden">
+          <div class="app-header">
             <h3 id="user-display">Hi!</h3>
-            <button onclick="logout()" style="width: auto; padding: 5px 10px; background: #94a3b8;">Logout</button>
-        </div>
-        
-        <div style="margin: 20px 0; border-top: 1px solid #eee; padding-top: 15px;">
-            <input type="text" id="habit-name" placeholder="New habit name...">
-            <button onclick="addHabit()">+ Add Habit</button>
-        </div>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+          </div>
 
-        <div id="habit-container"></div>
+          <div class="habit-input-area">
+            <input
+              type="text"
+              id="habit-name"
+              placeholder="New habit name..."
+            />
+            <button class="btn-add" onclick="addHabit()">+ Add Habit</button>
+          </div>
+
+          <div id="habit-container"></div>
+        </div>
+      </div>
     </div>
-</div>
 
-<script src="./habit.js"></script
-</body>
+    <script src="./habit.js"></script>
+  </body>
 </html>
