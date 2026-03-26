@@ -4,10 +4,19 @@ window.onload = () => {
 };
 
 function showScreen(id) {
-  ["signup-screen", "login-screen", "app-screen"].forEach((s) =>
-    document.getElementById(s).classList.add("hidden"),
-  );
+  ["signup-screen", "login-screen", "app-screen"].forEach((s) => document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
+}
+
+function notify(msg, type = "success") {
+  const colors = { success: "#10b981", error: "#ef4444", warn: "#f59e0b" };
+  Toastify({
+    text: msg,
+    duration: 3000,
+    gravity: "top",
+    position: "right",
+    style: { background: colors[type] || colors.success, borderRadius: "10px" }
+  }).showToast();
 }
 
 function handleSignup() {
@@ -19,24 +28,12 @@ function handleSignup() {
   const gender = document.getElementById("s-gender").value;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  if (!username || !fname || !lname || !email || !pass || !gender)
-    return alert("Fill all fields!");
-  if (!emailRegex.test(email))
-    return alert("Invalid Email! Must be a real email address.");
-  if (localStorage.getItem(email)) return alert("User already exists!");
+  if (!username || !fname || !lname || !email || !pass || !gender) return notify("Fill all fields!", "error");
+  if (!emailRegex.test(email)) return notify("Invalid Email!", "error");
+  if (localStorage.getItem(email)) return notify("User already exists!", "error");
 
-  localStorage.setItem(
-    email,
-    JSON.stringify({
-      username,
-      firstName: fname,
-      lastName: lname,
-      password: btoa(pass),
-      gender,
-      habits: [],
-    }),
-  );
-  alert("Account created! Please login.");
+  localStorage.setItem(email, JSON.stringify({ username, firstName: fname, lastName: lname, password: btoa(pass), gender, habits: [] }));
+  notify("Account created! Please login.");
   showScreen("login-screen");
 }
 
@@ -47,28 +44,22 @@ function handleLogin() {
   if (stored && stored.password === btoa(pass)) {
     sessionStorage.setItem("sessionUser", email);
     renderApp(email);
-  } else alert("Invalid email or password");
+  } else notify("Invalid email or password", "error");
 }
 
 function renderApp(email) {
   const user = JSON.parse(localStorage.getItem(email));
   document.getElementById("user-display").innerText = `Hi, ${user.username}!`;
-
   const today = new Date().toDateString();
-  const pending = user.habits.filter((h) => h.lastUpdated !== today);
-  if (pending.length > 0) {
-    alert(
-      `Don't forget! You have ${pending.length} habit(s) to complete today.`,
-    );
-  }
-
+  const pending = user.habits.filter(h => h.lastUpdated !== today);
+  if (pending.length > 0) notify(`Don't forget! ${pending.length} habit(s) left today.`, "warn");
   showScreen("app-screen");
   renderHabits();
 }
 
-function logout() {
-  sessionStorage.removeItem("sessionUser");
-  location.reload();
+function logout() { 
+  sessionStorage.removeItem("sessionUser"); 
+  location.reload(); 
 }
 
 function addHabit() {
@@ -76,20 +67,13 @@ function addHabit() {
   const nameInput = document.getElementById("habit-name");
   const name = nameInput.value.trim();
   if (!name) return;
-
   const data = JSON.parse(localStorage.getItem(email));
-  const isDuplicate = data.habits.some(
-    (h) => h.name.toLowerCase() === name.toLowerCase(),
-  );
-
-  if (isDuplicate) {
-    alert("You are already tracking this habit!");
-    return;
-  }
+  if (data.habits.some(h => h.name.toLowerCase() === name.toLowerCase())) return notify("Already tracking this!", "error");
 
   data.habits.push({ name, streak: 0, lastUpdated: null, weeklyHits: 0 });
   localStorage.setItem(email, JSON.stringify(data));
   nameInput.value = "";
+  notify("Habit added!");
   renderHabits();
 }
 
@@ -97,13 +81,13 @@ function completeHabit(index) {
   const email = sessionStorage.getItem("sessionUser");
   const data = JSON.parse(localStorage.getItem(email));
   const habit = data.habits[index];
-  const today = new Date().toDateString();
-  if (habit.lastUpdated === today) return alert("Already checked in today!");
+  if (habit.lastUpdated === new Date().toDateString()) return notify("Already checked in!", "warn");
 
   habit.streak += 1;
   habit.weeklyHits = Math.min(habit.weeklyHits + 1, 7);
-  habit.lastUpdated = today;
+  habit.lastUpdated = new Date().toDateString();
   localStorage.setItem(email, JSON.stringify(data));
+  notify("Check-in successful!");
   renderHabits();
 }
 
@@ -113,17 +97,17 @@ function resetStreak(index) {
   data.habits[index].streak = 0;
   data.habits[index].weeklyHits = 0;
   localStorage.setItem(email, JSON.stringify(data));
+  notify("Streak reset.", "warn");
   renderHabits();
 }
 
 function deleteHabit(index) {
-  if (!confirm("Are you sure you want to delete this habit?")) return;
+  if (!confirm("Delete this habit?")) return;
   const email = sessionStorage.getItem("sessionUser");
   const data = JSON.parse(localStorage.getItem(email));
-
   data.habits.splice(index, 1);
-
   localStorage.setItem(email, JSON.stringify(data));
+  notify("Habit deleted.", "error");
   renderHabits();
 }
 
@@ -132,22 +116,18 @@ function renderHabits() {
   const container = document.getElementById("habit-container");
   const data = JSON.parse(localStorage.getItem(email));
   container.innerHTML = "";
-  if (!data.habits) return;
-
+  if(!data.habits) return;
   data.habits.forEach((h, i) => {
     const percent = (h.weeklyHits / 7) * 100;
     container.innerHTML += `
       <div class="habit-item">
-        <div style="display:flex; justify-content:space-between">
-          <strong style="font-size: 1.2rem;">${h.name}</strong>
-          <span>🔥 ${h.streak}</span>
-        </div>
+        <div style="display:flex; justify-content:space-between"><strong>${h.name}</strong><span>🔥 ${h.streak}</span></div>
         <div class="progress-bg"><div class="progress-fill" style="width:${percent}%"></div></div>
-        <small>Weekly Progress: ${h.weeklyHits}/7</small>
-        <div style="display:flex; gap:10px; margin-top:15px; flex-wrap: wrap;">
-          <button onclick="completeHabit(${i})" style="background:#10b981; width: auto; padding: 10px 20px; border:none; border-radius:8px; color:white; cursor:pointer;">Check In</button>
-          <button onclick="resetStreak(${i})" style="background:#f59e0b; width: auto; padding: 10px 20px; border:none; border-radius:8px; color:white; cursor:pointer;">Reset</button>
-          <button onclick="deleteHabit(${i})" style="background:#ef4444; width: auto; padding: 10px 20px; border:none; border-radius:8px; color:white; cursor:pointer;">Delete</button>
+        <small>Weekly: ${h.weeklyHits}/7</small>
+        <div style="display:flex; gap:10px; margin-top:15px;">
+          <button onclick="completeHabit(${i})" style="background:#10b981; width:auto; padding:10px 20px; border:none; border-radius:8px; color:white; cursor:pointer;">Check In</button>
+          <button onclick="resetStreak(${i})" style="background:#f59e0b; width:auto; padding:10px 20px; border:none; border-radius:8px; color:white; cursor:pointer;">Reset</button>
+          <button onclick="deleteHabit(${i})" style="background:#ef4444; width:auto; padding:10px 20px; border:none; border-radius:8px; color:white; cursor:pointer;">Delete</button>
         </div>
       </div>`;
   });
